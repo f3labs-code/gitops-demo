@@ -2,7 +2,7 @@ name: 'Terraform'
 on:
   push:
     branches:
-      - main
+      - all
   pull_request:
 
 jobs:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: action/checkout@v3
+        uses: actions/checkout@v3
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
@@ -31,7 +31,7 @@ jobs:
         run: terraform plan -no-color -input=false
         continue-on-error: true
       - name: Update Pull Request
-        uses: actions/github-script@6
+        uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
         env:
           PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
